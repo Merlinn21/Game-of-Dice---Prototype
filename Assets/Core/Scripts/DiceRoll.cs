@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class DiceRoll : MonoBehaviour
 {
+    public Dice[] dices;
+    public ItemManager itemManager;
+
     [SerializeField] Vector3[] facesRotation;
     [SerializeField] float[] xyz;
 
@@ -21,14 +24,19 @@ public class DiceRoll : MonoBehaviour
     [SerializeField] Text currentPointText;
 
     [SerializeField] RotateMode rotateMode;
-    
 
+    //Untuk Debug
+    [SerializeField] GameObject showDiceStat;
+    [SerializeField] GameObject showOdd;
+    
     bool isRotating = false;
     bool isWinningSon = true;
 
     int currentRoll = 0;
     int currentDice = 0;
     int currentPoint = 0;
+
+    Dice dice;
 
     private void Start()
     {
@@ -65,42 +73,48 @@ public class DiceRoll : MonoBehaviour
 
         float random = Random.Range(0, 1f);
 
+        int diceIndex = 0;
+
+        Kingdom currentKingdom = Kingdom.All;
+
         if(random < 0.167f)
         {
-            randomFaceRotation = facesRotation[0];
-
-            currentPoint += 1;
+            diceIndex = 0;
+            currentKingdom = Kingdom.White;
         }
         else if(random < 0.333f)
         {
-            randomFaceRotation = facesRotation[1];
-
-            currentPoint += 2;
+            diceIndex = 1;
+            currentKingdom = Kingdom.Blue;
         }
         else if(random < 0.5f)
         {
-            randomFaceRotation = facesRotation[2];
-
-            currentPoint += 3;
+            diceIndex = 2;
+            currentKingdom = Kingdom.Green;
         }
         else if(random < 0.667f)
         {
-            randomFaceRotation = facesRotation[3];
-
-            currentPoint += 4;
+            diceIndex = 3;
+            currentKingdom = Kingdom.Red;
         }
         else if(random < 0.834f)
         {
-            randomFaceRotation = facesRotation[4];
-
-            currentPoint += 5;
+            diceIndex = 4;
+            currentKingdom = Kingdom.Yellow;
         }
         else if(random < 1.1f)
         {
-            randomFaceRotation = facesRotation[5];
-
-            currentPoint += 6;
+            diceIndex = 5;
+            currentKingdom = Kingdom.Black;
         }
+
+        randomFaceRotation = facesRotation[diceIndex];
+
+        dice = dices[diceIndex];
+
+        itemManager.CheckItem(this, currentKingdom); // Untuk check effect item
+
+        currentPoint += dice.GetTotalValue();
 
         return randomFaceRotation;
     }
@@ -145,6 +159,12 @@ public class DiceRoll : MonoBehaviour
             UpdatePointUI();
 
             CheckGameOver();
+
+            itemManager.SetChance(currentDice);
+
+            //TODO: Show choose item
+            //if(currentDice == 1)
+            itemManager.AddItem(this);
         }
 
     }
@@ -176,5 +196,17 @@ public class DiceRoll : MonoBehaviour
         currentChanceText.text = currentDice.ToString();
         currentPointText.text = currentPoint.ToString();
         feeText.text = currentFee.ToString();
+    }
+
+    public void ShowDiceStat()
+    {
+        showOdd.SetActive(false);
+        showDiceStat.SetActive(true);
+    }
+
+    public void ShowOdd()
+    {
+        showOdd.SetActive(true);
+        showDiceStat.SetActive(false);
     }
 }
