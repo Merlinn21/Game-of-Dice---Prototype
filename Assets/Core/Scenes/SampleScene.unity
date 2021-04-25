@@ -2185,6 +2185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1120396019}
   - component: {fileID: 1120396018}
+  - component: {fileID: 1120396020}
   m_Layer: 0
   m_Name: Item Manager
   m_TagString: Untagged
@@ -2204,7 +2205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ae21fe98f01bdd4994052c359a4b494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allItemList: []
+  itemPool: {fileID: 1120396020}
   roundChance:
   - {fileID: 11400000, guid: 80216e4345621a54dabd70fd95281abd, type: 2}
   - {fileID: 11400000, guid: e9f8cc3bb2e8476409afadbe9c764044, type: 2}
@@ -2231,6 +2232,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1120396020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120396017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d88173510b44c634e89ab899ece5bc40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commonItems: []
+  uncommonItems: []
+  rareItems: []
+  legendaryItems: []
 --- !u!1 &1131962571
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ItemManager : MonoBehaviour
 {
-    [SerializeField] List<ItemBase> allItemList;
+    [SerializeField] ItemPool itemPool;
     [SerializeField] List<ItemChanceBase> roundChance;
     [SerializeField] List<ItemBase> ownedItem;
     [SerializeField] ItemBase testingItem;
@@ -20,13 +20,32 @@ public class ItemManager : MonoBehaviour
     float currentRare = 0;
     float currentLegendary = 0;
 
+    List<ItemBase> commonPool;
+    List<ItemBase> uncommonPool;
+    List<ItemBase> rarePool;
+    List<ItemBase> legendaryPool;
+
+    int roundIndex = 0;
+
     private void Start()
     {
-        SetChance(0);    
+        initItemList();
+
+        SetChance(0);
     }
 
-    public void SetChance(int roundIndex)
+    private void initItemList()
     {
+        commonPool = itemPool.GetCommon();
+        uncommonPool = itemPool.GetUncommon();
+        rarePool = itemPool.GetRare();
+        legendaryPool = itemPool.GetLegendary();
+    }
+
+    public void SetChance(int index)
+    {
+        roundIndex = index;
+
         if(roundIndex < roundChance.Count)
         {
             currentCommon = roundChance[roundIndex].GetCommonChance();
@@ -35,6 +54,12 @@ public class ItemManager : MonoBehaviour
             currentLegendary = roundChance[roundIndex].GetLegendaryChance();
 
             ChanceUI();
+        }
+
+
+        for (int i = 0; i < 100; i++)
+        {
+            Debug.Log(index + ": "+RandomItem.GetRandomItem(roundChance[roundIndex]));
         }
     }
 
