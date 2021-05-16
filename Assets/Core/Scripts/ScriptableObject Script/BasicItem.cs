@@ -58,9 +58,8 @@ public class BasicItem : ItemBase
                 diceRoll.dices[i].AddModifier(plusEffect);
             }
         }
-        
 
-        if(targetMinusEffects[0] != Kingdom.All)
+        if(targetMinusEffects[0] != Kingdom.None)
         {
             foreach (Kingdom target in targetMinusEffects)
             {
@@ -91,7 +90,7 @@ public class BasicItem : ItemBase
                 diceRoll.dices[index].AddModifier(-minusEffect);
             }
         }
-        else
+        else if (targetMinusEffects[0] == Kingdom.All)
         {
             for (int i = 0; i < diceRoll.dices.Length; i++)
             {

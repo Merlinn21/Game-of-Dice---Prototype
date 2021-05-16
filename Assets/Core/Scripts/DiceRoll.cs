@@ -112,7 +112,7 @@ public class DiceRoll : MonoBehaviour
 
         dice = dices[diceIndex];
 
-        itemManager.CheckItem(this, currentKingdom); // Untuk check effect item
+        itemManager.CheckItem(currentKingdom); // Untuk check effect item
 
         currentPoint += dice.GetTotalValue();
 
@@ -137,7 +137,7 @@ public class DiceRoll : MonoBehaviour
                                                  Random.Range(0, transform.rotation.y - xyz[1]), 
                                                  Random.Range(0, transform.rotation.z - xyz[2]));
 
-        //kocok maxRoll kali baru berhenti 
+        //kocok maxRoll x kali baru berhenti 
         if (currentRoll != maxRoll)
         {
             //kalo masih belum maxRoll
@@ -151,7 +151,7 @@ public class DiceRoll : MonoBehaviour
         }
         else
         {
-            //kalo udh maxRoll x
+            //kalo udh maxRoll
             transform.DORotate(faceTarget, rotateDuration);
 
             currentRoll = 0;
@@ -159,13 +159,13 @@ public class DiceRoll : MonoBehaviour
             UpdatePointUI();
 
             CheckGameOver();
-
-            itemManager.SetChance(currentDice);
-
-            //TODO: Show choose item
-            //if(currentDice == 1)
-            itemManager.AddItem(this);
         }
+
+        itemManager.SetChance(currentDice - 1);
+
+        itemManager.ClearChoices();
+
+        itemManager.OpenPanel();
 
     }
 

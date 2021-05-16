@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e7adcfbfdefd34fa5d295349fc9226, type: 3}
   m_Name: Basic White Item
   m_EditorClassIdentifier: 
-  itemName: White Item
+  itemName: Basic White
   belongTo: 0
-  targetPlusEffect: 00000000
-  targetMinusEffects: 
   itemTypes: 00000000
   itemRarity: 0
   createdEntity: {fileID: 0}
   description: White Item
+  targetPlusEffect: 00000000
+  targetMinusEffects: 07000000
   plusEffect: 1
   minusEffect: 0

@@ -7,10 +7,10 @@ public static class RandomItem
 {
     private static Random random = new Random();
 
-    public static int COMMON_RARITY = 0;
-    public static int UNCOMMON_RARITY = 1;
-    public static int RARE_RARITY = 2;
-    public static int LEGENDARY_RARITY = 3;
+    public const int COMMON_RARITY = 0;
+    public const int UNCOMMON_RARITY = 1;
+    public const int RARE_RARITY = 2;
+    public const int LEGENDARY_RARITY = 3;
 
     public static int GetRandomItem(ItemChanceBase itemChanceBase)
     {

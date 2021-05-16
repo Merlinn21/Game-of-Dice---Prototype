@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ItemManager : MonoBehaviour
 {
+    [SerializeField] DiceRoll diceRoll;
     [SerializeField] ItemPool itemPool;
     [SerializeField] List<ItemChanceBase> roundChance;
     [SerializeField] List<ItemBase> ownedItem;
@@ -15,6 +16,9 @@ public class ItemManager : MonoBehaviour
     [SerializeField] Text rareText;
     [SerializeField] Text legendText;
 
+    [SerializeField] GameObject chooseItemPanel;
+    [SerializeField] GameObject[] itemsPanel;
+
     float currentCommon = 0;
     float currentUncommon = 0;
     float currentRare = 0;
@@ -24,6 +28,7 @@ public class ItemManager : MonoBehaviour
     List<ItemBase> uncommonPool;
     List<ItemBase> rarePool;
     List<ItemBase> legendaryPool;
+    [SerializeField] List<ItemBase> randomChoices = new List<ItemBase>();
 
     int roundIndex = 0;
 
@@ -46,7 +51,7 @@ public class ItemManager : MonoBehaviour
     {
         roundIndex = index;
 
-        if(roundIndex < roundChance.Count)
+        if (roundIndex < roundChance.Count)
         {
             currentCommon = roundChance[roundIndex].GetCommonChance();
             currentUncommon = roundChance[roundIndex].GetUncommonChance();
@@ -56,11 +61,10 @@ public class ItemManager : MonoBehaviour
             ChanceUI();
         }
 
-
-        for (int i = 0; i < 100; i++)
+        /*for (int i = 0; i < 100; i++)
         {
-            Debug.Log(index + ": "+RandomItem.GetRandomItem(roundChance[roundIndex]));
-        }
+            Debug.Log(index + ": " + RandomItem.GetRandomItem(roundChance[roundIndex]));
+        }*/
     }
 
     public void ChanceUI()
@@ -71,7 +75,7 @@ public class ItemManager : MonoBehaviour
         legendText.text = currentLegendary.ToString();
     }
 
-    public void CheckItem(DiceRoll diceRoll, Kingdom currentKingdom)
+    public void CheckItem(Kingdom currentKingdom)
     {
         if (ownedItem.Count == 0) return;
 
@@ -92,18 +96,69 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    public void AddItem(DiceRoll diceRoll)
+    public void AddItem(int index)
     {
-        if (testingItem != null)
+        ownedItem.Add(randomChoices[index]);
+        randomChoices[index].InitEffect(diceRoll);
+    }
+
+    public void OpenPanel()
+    {
+        chooseItemPanel.SetActive(true);
+
+        RandomizeItemsChoice();
+    }
+
+    public void ClosePanel()
+    {
+        chooseItemPanel.SetActive(false);
+    }
+
+    public void ClearChoices()
+    {
+        randomChoices.Clear();
+    }
+
+    void RandomizeItemsChoice()
+    {
+        randomChoices = new List<ItemBase>();
+
+        for(int i = 0; i < itemsPanel.Length; i++)
         {
-            //Jalanin kode biasa
-            ownedItem.Add(testingItem);
-            ownedItem[0].InitEffect(diceRoll);
-        }
-        else
-        {
-            ownedItem.Add(testingItem);
-            ownedItem[0].InitEffect(diceRoll);
+            int itemRarity = 0;
+
+            if (roundIndex < roundChance.Count)
+                itemRarity = RandomItem.GetRandomItem(roundChance[roundIndex]);
+            else
+                itemRarity = RandomItem.GetRandomItem(roundChance[roundChance.Count - 1]);
+
+            ItemBase item;
+
+            List<ItemBase> itemRarityPool = new List<ItemBase>();
+
+            //Sementara bener bener random
+            switch (itemRarity)
+            {
+                case RandomItem.COMMON_RARITY:
+                    itemRarityPool = commonPool;
+                    break;
+                case RandomItem.UNCOMMON_RARITY:
+                    itemRarityPool = uncommonPool;
+                    break;
+                case RandomItem.RARE_RARITY:
+                    itemRarityPool = rarePool;
+                    break;
+                case RandomItem.LEGENDARY_RARITY:
+                    itemRarityPool = legendaryPool;
+                    break;
+            }
+
+            int randomItem = Random.Range(0, itemRarityPool.Count);
+
+            //TODO: ambil item description, sprite, dll.
+            itemsPanel[i].gameObject.GetComponentInChildren<Text>().text = itemRarityPool[randomItem].GetItemName();
+
+            randomChoices.Add(itemRarityPool[randomItem]);
         }
     }
 }

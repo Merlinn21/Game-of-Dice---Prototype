@@ -9,7 +9,8 @@ public enum Kingdom
     Red,
     Yellow,
     Black,
-    All
+    All,
+    None
 }
 
 public enum ItemType
